@@ -1,4 +1,4 @@
-import { CONTEXT_VERSION, LeafletProvider } from '@react-leaflet/core'
+import {CONTEXT_VERSION, LeafletProvider} from '@react-leaflet/core'
 import {
   FitBoundsOptions,
   LatLngBoundsExpression,
@@ -82,7 +82,11 @@ export function MapContainer<
   const contents = context ? (
     <LeafletProvider value={context}>{children}</LeafletProvider>
   ) : (
-    placeholder ?? null
+    // placeholder ?? null
+    // Fix: replaced with:
+    placeholder === null || placeholder === undefined
+      ? null
+      : placeholder
   )
   return (
     <div {...props} ref={mapRef}>
