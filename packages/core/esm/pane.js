@@ -1,7 +1,7 @@
 export function withPane(props, context) {
-  var _props$pane;
-
-  const pane = (_props$pane = props.pane) != null ? _props$pane : context.pane;
+  // const pane = props.pane ?? context.pane
+  // Fix: replaced with:
+  const pane = props.pane === null || props.pane === undefined ? context.pane : props.pane;
   return pane ? { ...props,
     pane
   } : props;

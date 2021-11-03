@@ -67,7 +67,9 @@ function MapContainer({
   } : null, [map]);
   const contents = context ? /*#__PURE__*/_react.default.createElement(_core.LeafletProvider, {
     value: context
-  }, children) : placeholder != null ? placeholder : null;
+  }, children) : // placeholder ?? null
+  // Fix: replaced with:
+  placeholder === null || placeholder === undefined ? null : placeholder;
   return /*#__PURE__*/_react.default.createElement("div", _extends({}, props, {
     ref: mapRef
   }), contents);

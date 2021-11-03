@@ -5,14 +5,14 @@ import { useEventHandlers } from './events';
 import { withPane } from './pane';
 export function useLayerLifecycle(element, context) {
   useEffect(function addLayer() {
-    var _context$layerContain;
-
-    const container = (_context$layerContain = context.layerContainer) != null ? _context$layerContain : context.map;
+    // const container = context.layerContainer ?? context.map
+    // Fix: replaced with:
+    const container = context.layerContainer === null || context.layerContainer === undefined ? context.map : context.layerContainer;
     container.addLayer(element.instance);
     return function removeLayer() {
-      var _context$layerContain2;
+      var _context$layerContain;
 
-      (_context$layerContain2 = context.layerContainer) == null ? void 0 : _context$layerContain2.removeLayer(element.instance);
+      (_context$layerContain = context.layerContainer) == null ? void 0 : _context$layerContain.removeLayer(element.instance);
       context.map.removeLayer(element.instance);
     };
   }, [context, element]);

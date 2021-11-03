@@ -139,9 +139,9 @@
   }
 
   function withPane(props, context) {
-    var _props$pane;
-
-    const pane = (_props$pane = props.pane) != null ? _props$pane : context.pane;
+    // const pane = props.pane ?? context.pane
+    // Fix: replaced with:
+    const pane = props.pane === null || props.pane === undefined ? context.pane : props.pane;
     return pane ? { ...props,
       pane
     } : props;
@@ -193,14 +193,14 @@
 
   function useLayerLifecycle(element, context) {
     React.useEffect(function addLayer() {
-      var _context$layerContain;
-
-      const container = (_context$layerContain = context.layerContainer) != null ? _context$layerContain : context.map;
+      // const container = context.layerContainer ?? context.map
+      // Fix: replaced with:
+      const container = context.layerContainer === null || context.layerContainer === undefined ? context.map : context.layerContainer;
       container.addLayer(element.instance);
       return function removeLayer() {
-        var _context$layerContain2;
+        var _context$layerContain;
 
-        (_context$layerContain2 = context.layerContainer) == null ? void 0 : _context$layerContain2.removeLayer(element.instance);
+        (_context$layerContain = context.layerContainer) == null ? void 0 : _context$layerContain.removeLayer(element.instance);
         context.map.removeLayer(element.instance);
       };
     }, [context, element]);
@@ -220,9 +220,9 @@
     const optionsRef = React.useRef();
     React.useEffect(function updatePathOptions() {
       if (props.pathOptions !== optionsRef.current) {
-        var _props$pathOptions;
-
-        const options = (_props$pathOptions = props.pathOptions) != null ? _props$pathOptions : {};
+        // const options = props.pathOptions ?? {}
+        // Fix: replaced with:
+        const options = props.pathOptions === null || props.pathOptions === undefined ? {} : props.pathOptions;
         element.instance.setStyle(options);
         optionsRef.current = options;
       }
@@ -578,7 +578,9 @@
     } : null, [map]);
     const contents = context ? /*#__PURE__*/React__default["default"].createElement(LeafletProvider, {
       value: context
-    }, children) : placeholder != null ? placeholder : null;
+    }, children) : // placeholder ?? null
+    // Fix: replaced with:
+    placeholder === null || placeholder === undefined ? null : placeholder;
     return /*#__PURE__*/React__default["default"].createElement("div", _extends({}, props, {
       ref: mapRef
     }), contents);
@@ -632,8 +634,6 @@
   }
 
   function createPane(props, context) {
-    var _props$pane;
-
     const name = props.name;
 
     if (DEFAULT_PANES.indexOf(name) !== -1) {
@@ -642,9 +642,11 @@
 
     if (context.map.getPane(name) != null) {
       throw new Error(`A pane with this name already exists: ${name}`);
-    }
+    } // const parentPaneName = props.pane ?? context.pane
+    // Fix: replaced with:
 
-    const parentPaneName = (_props$pane = props.pane) != null ? _props$pane : context.pane;
+
+    const parentPaneName = props.pane === null || props.pane === undefined ? context.pane : props.pane;
     const parentPane = parentPaneName ? context.map.getPane(parentPaneName) : undefined;
     const element = context.map.createPane(name, parentPane);
 
